@@ -65,17 +65,17 @@ def build_model():
                      ('clf', MultiOutputClassifier(RandomForestClassifier(random_state=SEED)))])
     
     parameters = {
-        'clf__estimator__n_estimators':[50, 100, 500],
-        'count_vect__ngram_range':((1,1),(1,2))
+        'clf__estimator__n_estimators':[50, 100],
+        'clf__estimator__bootstrap':[True, False]
     }
 
-    cv = GridSearchCV(pipeline, parameters)
+    cv = GridSearchCV(pipeline, parameters, cv=2, n_jobs=-1)
     
     return cv
 
 def evaluate_model(model, X_test, y_test, category_names):
     total_acc = 0
-    y_predict = model.predict(X_test)
+    y_pred = model.predict(X_test)
     
     for i in range(y_test.shape[1]):
         acc = accuracy_score(y_test[:,i], y_pred[:,i])
@@ -87,7 +87,9 @@ def evaluate_model(model, X_test, y_test, category_names):
     print('\nAverage Accuracy: {}'.format(total_acc/y_test)) 
 
 def save_model(model, model_filepath):
-    pass
+    import pickle
+    
+    pickle.dump(model.best_estimator_, open(model_filepath,'wb'))
 
 
 def main():
