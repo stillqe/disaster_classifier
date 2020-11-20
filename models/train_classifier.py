@@ -35,10 +35,7 @@ def load_data(database_filepath):
  
     engine = create_engine('sqlite:///'+database_filepath)
     df = pd.read_sql_table('InsertTableName', engine)
-    
-    for col in df.loc[:, 'related':].columns:
-        if df[col].sum() == 0:
-            df = df.drop(col, axis=1)
+
     
     X = df.message.values
     y = df.loc[:, 'related':].values
