@@ -14,10 +14,6 @@ nltk.download('stopwords')
 nltk.download('wordnet')
 
 
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-
 from sklearn.pipeline import Pipeline
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.multioutput import MultiOutputClassifier
@@ -34,7 +30,7 @@ SEED=123
 def load_data(database_filepath):
  
     engine = create_engine('sqlite:///'+database_filepath)
-    df = pd.read_sql_table('InsertTableName', engine)
+    df = pd.read_sql_table('Disaster', engine)
 
     
     X = df.message.values
@@ -62,11 +58,13 @@ def build_model():
                      ('clf', MultiOutputClassifier(RandomForestClassifier(random_state=SEED)))])
     
     parameters = {
+        'count_vect__max_df':(0.5, 0.75, 1.0),
+        'tfidf__use_idf':(True, False),
         'clf__estimator__n_estimators':[50, 100],
         'clf__estimator__bootstrap':[True, False]
     }
 
-    cv = GridSearchCV(pipeline, parameters, cv=2, n_jobs=-1)
+    cv = GridSearchCV(pipeline, parameters, cv=2)
     
     return cv
 
@@ -81,7 +79,7 @@ def evaluate_model(model, X_test, y_test, category_names):
         print(classification_report(y_test[:,i], y_pred[:,i]))
     
     print('**********************************')
-    print('\nAverage Accuracy: {}'.format(total_acc/y_test)) 
+    print('\nAverage Accuracy: {}'.format(total_acc/y_test.shape[1]))
 
 def save_model(model, model_filepath):
     import pickle
