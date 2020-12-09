@@ -36,3 +36,5 @@ The last one is a part for deploying of web app, backed by Flask web framework.
 ## Licensing, Acknowledgements
 This project is part of the requirements to complete Udacity's Data Science Nanodegree Program. 
 The basic frame is provided by Udacity.
+
+https://github.com/stillqe/disaster_classifier.git
