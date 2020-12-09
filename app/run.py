@@ -14,17 +14,9 @@ from wrangle_data import get_figures
 
 app = Flask(__name__)
 
+from models.train_classifier import tokenize
 
-def tokenize(text):
-    tokens = word_tokenize(text)
-    lemmatizer = WordNetLemmatizer()
 
-    clean_tokens = []
-    for tok in tokens:
-        clean_tok = lemmatizer.lemmatize(tok).lower().strip()
-        clean_tokens.append(clean_tok)
-
-    return clean_tokens
 
 
 # load data

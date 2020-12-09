@@ -27,6 +27,7 @@ SEED = 123
 
 
 def load_data(database_filepath):
+    """Load data from database"""
     engine = create_engine('sqlite:///' + database_filepath)
     df = pd.read_sql_table('Disaster', engine)
 
@@ -38,6 +39,7 @@ def load_data(database_filepath):
 
 
 def tokenize(text):
+    """Regularize, Lemmatize, Remove stop words, and return tokens"""
     stop_words = stopwords.words('english')
     lemmatizer = WordNetLemmatizer()
 
@@ -49,6 +51,8 @@ def tokenize(text):
 
 
 def build_model():
+    """Build machine learning pipeline consisting of CounterVectorizer, TfidfTransformer,
+    and multi-class Classifier with Random Forest model"""
     pipeline = Pipeline([('count_vect', CountVectorizer(tokenizer=tokenize)),
                          ('tfidf', TfidfTransformer()),
                          ('clf', MultiOutputClassifier(RandomForestClassifier(random_state=SEED)))])
@@ -66,6 +70,7 @@ def build_model():
 
 
 def evaluate_model(model, X_test, y_test, category_names):
+    """evaluate models for each category"""
     total_acc = 0
     y_pred = model.predict(X_test)
 
@@ -80,12 +85,14 @@ def evaluate_model(model, X_test, y_test, category_names):
 
 
 def save_model(model, model_filepath):
+    """Save model with the best parameter"""
     import pickle
 
     pickle.dump(model.best_estimator_, open(model_filepath, 'wb'))
 
 
 def run_pipeline(database_filepath, model_filepath):
+    """Run pipeline from loading data, training model to saving trained model"""
     print('Loading data...\n    DATABASE: {}'.format(database_filepath))
     X, Y, category_names = load_data(database_filepath)
     X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)

@@ -3,6 +3,7 @@ import pandas as pd
 from sqlalchemy import create_engine
 
 def load_data(messages_filepath, categories_filepath):
+    """Load data from csv file into dataframe and return"""
     # load messages dataset
     messages = pd.read_csv(messages_filepath)
     categories = pd.read_csv(categories_filepath)
@@ -14,6 +15,7 @@ def load_data(messages_filepath, categories_filepath):
 
 
 def clean_data(df):
+    """wrangle raw dataframe and return cleaned dataframe"""
     # create a dataframe of the 36 individual category columns
     categories = df.categories.str.split(pat=';', expand=True)
     categories.head()
@@ -47,12 +49,13 @@ def clean_data(df):
 
 
 def save_data(df, database_filename):
+    """Save cleaned dataframe to SQL database"""
     engine = create_engine('sqlite:///'+database_filename)
     df.to_sql('Disaster', engine, index=False)  
 
 
 def run_etl_pipeline(messages_filepath, categories_filepath, database_filepath):
-
+    """Run ETL pipeline from loading data, cleaning data, and saving data"""
     print('Loading data...\n    MESSAGES: {}\n    CATEGORIES: {}'
           .format(messages_filepath, categories_filepath))
     df = load_data(messages_filepath, categories_filepath)

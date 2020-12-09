@@ -1,4 +1,3 @@
-import pandas as pd
 from plotly.graph_objs import Bar, Pie
 import sys
 sys.path.append('../')
@@ -13,7 +12,6 @@ def get_figures(df):
 
     Returns:
         list (dict): list containing the plotly visualizations
-
     """
 
     sorted_by_sum = df.loc[:, 'related':].sum().sort_values(ascending=False)
@@ -91,7 +89,17 @@ def get_figures(df):
 
 
 def get_top_ngram(corpus, top=50, n=1):
-    vect = CountVectorizer(tokenizer=tokenize, ngram_range=(1,1), analyzer='word')
+    """Creates top 50 n-gram
+
+    Args:
+        corpus:
+        top: range of top numbers
+        n: n-gram
+
+    Returns:
+        top words: list containing the most common n-gram words
+    """
+    vect = CountVectorizer(tokenizer=tokenize, ngram_range=(n,n), analyzer='word')
     bow = vect.fit_transform(corpus)
     sum_words = bow.sum(axis=0)
     words_freq = [(word, sum_words[0, idx]) for word, idx in vect.vocabulary_.items()]
