@@ -51,7 +51,7 @@ def clean_data(df):
 def save_data(df, database_filename):
     """Save cleaned dataframe to SQL database"""
     engine = create_engine('sqlite:///'+database_filename)
-    df.to_sql('Disaster', engine, index=False)  
+    df.to_sql('Disaster', engine, index=False, if_exists='replace')
 
 
 def run_etl_pipeline(messages_filepath, categories_filepath, database_filepath):
