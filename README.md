@@ -7,6 +7,9 @@ The second is a pipeline for natural language processing and machine learning,
 which normalizes and tokenizes texts, remove stop words, performs feature extraction such as Count Vector & TF-IDF, 
 and finally classifies the messages using a random forest classifier with a grid search technique.
 The last one is a part for deploying of web app, backed by Flask web framework. 
+
+![](Screen-shot-web-app.png) 
+
    
 ## File Descriptions
 - app
@@ -17,6 +20,8 @@ The last one is a part for deploying of web app, backed by Flask web framework.
     - disaster_categories.csv: contains disaster categories for each message
     - disaster_messages.csv: contains disaster messages
     - DisasterResponse.db: DB file saved from the ETL pipeline
+    
+    
 - models
     - train_classifier.py: machine learning pipeline
 
